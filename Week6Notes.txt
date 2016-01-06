@@ -1,0 +1,222 @@
+What to Try Next
+How can you decide what to try next if your algorithm is failing
+- Debugging a learning algorithm. 
+	- Sometimes more training data doesn't help.
+	- Can try either more or fewer features
+	- Try adding polynomal features
+	- Try increasing/decreasing lambda
+- Simple technique to rule out options that won't work. Maching learning
+  diagnostic. 
+
+
+Evaluating a hypothesis
+- 70/30 training/test split
+- First learn from training data minimixng training error
+- Then compute test set error
+- Misclassification error (0/1 misclassification error)
+	- find % correct
+
+Model Selection and Train/Validation/Test sets
+- How to choose what model to try to fit to the data
+	- One idea would be to try a number of different polynomial level models
+	  and see which performs best on a test set.
+	- However, this is problematic in that it is likely to be an optimistic
+	  estimate of generalization error.  I.e. the extra parameter (degree of
+	  polynomial) is fit to the test data. So perf is likely to be
+	  overoptimistic estimate.
+	- 
+
+Diagnosing bias vs. variance
+- if you graph the training error vs the degree of polynomial being tested you
+  will expect a graph that has a high error for low polynomial values
+  decreasing asymptotically as the degree of polynomial increases.
+- However, if you graph the cross validation error on the same graph you will
+  expect to see something of a parabola with high CV error at both ends and a
+  low point of CV error in the middle.
+***
+- High Bias (Underfit) can usually be detected by a high training error and a
+  similarly high cross validation error
+- High Variance (Overfit) will see a low training error, but a cross validation
+  error that is much higher than the training error
+
+Bias vs. Variance
+- Suppose fitting with several polynomials and a regularization term to keep
+  the parameters small. 
+  - If very very large lambda value, i.e. lambda=10,000. In this case, there
+	will be a high bias (UNDERFITTING) and the hypothesis will more or less be
+	equal to Theta0 or the bias term
+  - If lambda is=0, with minimal regularization, high variance (OVERFITTING)
+	only if some intermediate values of lambda that will give some reapsonable
+	fit.
+- How to choose a good lambda value 
+  - maybe step up from 0.01->10. given these models, minimize the cost
+	function. Then pick which model that gives the lowest cross validation
+	error. Then check how well you model does on the test set. 
+- How do Cross Validation error and training error vary with differnt values of
+  lambda. If Lambda is small much more likely to overfit, and if lambda is too
+  large you have a large bias (underfit) problem.
+	- Cross validation will still be a parabola.
+
+Learning Curves
+- What happens if you limit the training set to a much smaller set? 
+	- if M<3 training error will be 0 if not using regularization. 
+	- As training set gets larger it becomes harder and harder to ensure that a
+	  quadratic function can fit an example well
+	- When m is small error will be small, but as m gets larger, it becomes
+	  harder to fit examples
+ - HIGH BIAS
+	- When graphing training errors as a function of training set size, 
+		- in the case of high bias the training error will be very small for an 
+		m sized training set, but will increase asymptotically as m increases.  
+		However, the cross validation error will be large with a small m and 
+		decrease asymptotically as m increases
+	- In the case of high bias, adding more training examples will not help
+
+ - HIGH VARIANCE
+ 	- if fitting a very high degree polynomial, and small value of lambda, will
+	  fit a function very well. if m small training error will be small. as m
+	  increases, j train increases, but will remain fairly low given high
+	  number of polynomials.
+	- CV error will be large at first and only decrease slightly. 
+	- * A Key indicator will be a large gap between the training error and the
+	  Cross validation error. 
+	- If add more training data, the cross validation error will keep going
+	  down.  adding more training data is likely to help
+- When trying to improve the performance of an algorithm, plotting the
+  performance of the learning curves is very helpful
+
+Deciding What to do Next
+- Getting more training examples
+	- Fixes high variance
+- Trying smaller sets of features
+	- Fixes high variance
+- Adding additional features
+	- Fixes high bias problems
+- Adding polynomial features
+	- Fixes high bias problems
+- Increasing/Decreasing Lambda
+	- Increasing Fixes high variance
+	- Decreasing Fixes high bias
+- In Neural Networks
+	- Small neural networks are prone to underfitting
+	- Larger neural networks are prone to overfitting
+
+
+
+Section Two
+Machine Learning System Design
+Building a spam classifier
+- First must decide how to classify Y, for example y is 1 if spam and 0 if not. 
+- Features
+	- Choose 100 works indicative of spam/not spam (e.g. deal, buy, discount)
+- Given list of 100 words, Design feature vector x of the length of the word
+  list set to 0 or 1 depending on whether or not the word appears. Xj is 1 if
+  work appears, 0 if not
+- Commonly, will pick n most common works (usually between 10k-50k)
+How to spend time to make it have low error
+- Collect lots of data
+- Develop sophisticated features based on email routing information (from email
+  header) 
+- Develop sophisticated features for message body (e.g. treating similar words
+  as same work, punctuation?)
+- Develop sophisticated algorithm to detect misspellings (e.g. m0rtgage,
+  med1cine...)
+
+
+Error Analysis
+Recommended Approach
+- Start with simple algorithm, that you can implement quickly
+- Plot learning Curves to decide if more data, more features, etc are likely to
+  help
+- Error analysis, manually examine examples (in CV set) see if you spot any
+  systematic trends in what type of examples its making errors on. 
+
+So if building classifier, if misclassify say 100 of 500 emails. The will
+manually examine 100 errors, and categorize based on
+- Type of Email (pharmacy, phishing, replica)
+	- If very large number are of certain type, might discover that algo is
+	  doing very poorly on a certain type of email and might be better to look
+	  closely at that type of emails
+- What cues would have helped classify them correctly. 
+	- Deliberate misspellings, unusual routing, unusual punctuation
+	- Again, if one stands out it might be worth time to 
+
+It is very important to have a numerical evalutation indicator
+- One example is the question, should discount/discounts/discounted/discounting
+  be treated as the same word
+	- Could using stemming software, but will also likely make mistakes like
+	  universe/university
+	- Error analysis may not be helpful to see if it improves performance
+	- So having way to evaluate stemming software performance with or without
+	  stemming is very helpful. 
+
+
+Trading Off Precision and Recall
+Want to be able to control the trade off between precision and Recall
+- Precision- The Number of True Positives / No. of Predicted Postives
+	- TruePos / (TruePos+FalsePos) 
+- Recall - The Number of True Positives / No. of Actual Positives
+	- TruePos / (TruePos+FalseNeg)
+- FalsePos Means Predicted positive, but actually negative
+- FalseNeg Means Predicted negative, but actually positive
+
+- If you want to only predict y=1 if more confident, so change threshold from
+  around 50% to 70%.  So end up with classifier with higher precision, but will
+  have lower recall
+- Meanwhile, if you want to avoid missing too many cases of cancer (avoid false
+  negatives) Then lower threshold which increases recall but lowers precision.
+- For most classifiers, as you vary the value of the threshold, there will be a
+  tradeoff between precision and recall.
+
+How to compare precision/recall numbers?
+- The F Score (or F1 Score) is the best way, 2*((PR)/(P+R))
+	- This values both values being large
+	- Perfect F-Score is 1, worst is 0
+	- So to automatically set the threshold can try a number of thresholds and
+	  pick the one that maximizes the F Score
+
+
+Data For Machine Learning
+Issue of how much data to train. usually don't want to just blindly add data,
+but sometimes it will help.
+- Often it is not who has the best algorithm, but the people with the most
+  data. 
+
+Large Data Rationale
+- Assume that the model has enough features to predict y accurately. 
+	- Example: {to, two, too} For breakfast I ate ____ eggs
+	- Counterexample: predicting housing price from only size
+	- A useful test would be, given an input x can a human expert predict y:w
+- If using a learning algorithm with many paramters (e.g. logistic regresion
+  with many fetures or a neural network with many hidden units) using a large
+  training set will be unlikely to overfit. 
+- So if use many parameters will avoid low bias problem and with a large
+  training set will have low variance as well.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

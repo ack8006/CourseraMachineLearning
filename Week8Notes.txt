@@ -1,0 +1,163 @@
+Unsupervised Learning
+Given an unlabeled dataset and asked to find structure in it
+
+Clustering
+K-Means Algorithm
+- Begin randomly initalizing K placed cluster centroids
+- For all the points, calculate which centroid they are closer to by closest
+  square distance. 
+- Readjust the centroids to the average center location of the points they are
+  closest to.
+- Repeat 2 and 3 until converge
+- If there is a cluster centroid with no points assigned to it you can either
+  elimiate it or randomly reinitialize it. More common to eliminate
+
+K-Means takes two inputs:
+- K (number of clusters)
+- Unlabeled training set of Xs
+
+
+Clustering Optimization Objective
+- K-means will never have an increasing cost. 
+
+
+Random Initialization
+How to randonly initialize cluster centroids
+- K (number of centroids) must be less than m
+- Randomly pick K training examples and set the centroids equal to these random
+  examples
+- K-means can get stuck at local optimas. If concerned about this, can run
+  using multiple random initializations.
+	- If run 100 times, randomly initialize K-means and compute cost function
+	- Pick the clustering that gave the lowest cost
+
+
+Choosing the number of Clusters (K)
+- There is not a great way of doing this automatically, best way is probably
+  looking at visualizations. 
+- There isn't necessarily a correct answer for number of clusters
+
+Elbow Method
+- Run K-means with different number of clusters. If you graph the cost vs. the
+  number of clusters there may be a rapid reduction in cost followed by a
+  sharp reduction in the pace of reduction
+- Not used that often. Often there is a much smoother curve of cost vs
+  clusters. It's worth a shot, but doesn't work that well all the time
+
+Choosing K
+- Sometimes you're running K-means to get clusters for some later/downstream
+  purpose.
+- So you can evaluate K-eans based on a metric for how well it performs for
+  that later purpose
+
+
+
+Dimensionality Reduction
+Motivation I: DataCompression
+- If have highly correlated or same features, can come up with a new feature
+  that represents both features in 1D of data.  (reducing 2D data to 1D)
+	- Length in inches vs. length in cm. 
+- Can reduce any number of dimensions to a different number of dimensions.
+  2D->1D, 3D->2D, 1000D->100D
+
+Motivation II: Data Visualization
+- Reduce many dimensional data down to just 2 or 3 dimensions
+
+
+Principal Component Analysis (PCA) problem formulation
+- Given a dataset, if want to reduce dimensionality of data. Want to find a
+  surface onto which to project the data. 
+- PCA Tries to find a lower dimensional surface to project the data onto that
+  minimizes the sum of squared errors between the actual points and the surface
+  	- Find a direction onto which to project the data to minimize the
+	  projection error
+- Need to first perform mean normalization and feature scaling
+- while there are cosmetic similarties between PCA and linear regression, they
+  are not the same. PCA attempts to minimize the distance between the point and
+  the surface. Regression attempts to minimize the verticle distance between
+  point and surface. Regression is trying to predict Y. PCA doesn't have some
+  special variable y that it is trying to predict. All features are same
+  importance. 
+  	- PCA only uses X variables, regression is Xs vs Y.
+
+
+Principal Component Analysis Algorithm
+Preprocessing 
+	- Mean Normalization
+		- Replace each x with x-mean
+	- Feature Scaling
+- Compute 'covariance matrix'
+	- Will be an nxn matrix
+- Compute 'eigenvectors' of the 'covariance matrix'
+	- Singular value decomposition, need U matrix
+
+
+Applying PCA
+Reconstruction from Compressed Representation
+ 
+
+Choosing the Number of Principal Components
+- Average Squared Projection Error
+	- The average squared distance between the Xapprox and X
+- Total Variation in the Data
+	- Average length from 0 of each training example
+- Typically choose k to be smallest value so
+  AverageSquaredProjectionError/TotalVariationInData <= 0.01
+  	- 99% of variance is retained
+
+- Try PCA with k=1 if the expression is <=0.01 pick k, otherwise keep increasing
+  k until this is correct. This is very inefficient
+- BUT better way is using the S matrix the svd function returns
+	- The above function is equal to 1 - (sum to k Sii/sum to n Sii)
+	- This is much more efficient because only need to calculate SVD once
+
+
+Advice for Applying PCA
+Supervised learning speedup
+- Extract unlabeled dataset from full dataset
+- Perform PCA on unlabeled data then recombine with the labels
+- When testing apply the same mapping you used on the training set to the test
+  and CV sets
+
+Main Uses of PCA
+- Compression to reduce disk space or speed up learning
+- Visualization with K=2 or K=3
+
+A Bad Use of PCA is to use it to prevent overfitting
+- It may work okay, but it is not a good way to address overfitting. Use
+  regularization instead.
+- PCA basically throws away some data without knowing what Y is. May also throw
+  away some valuable information. 
+
+When PCA is used when it shouldn't be
+- Only try implementing PCA after you have run it on the original/raw data.
+  Only if that doesn't do what you want, then implement PCA
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

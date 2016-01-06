@@ -1,0 +1,138 @@
+Support Vector Machines
+
+Optimization Objective
+
+Large Margin Classification
+When Optimizing, there are two sub cost functions
+	- Cost1 you want Theta to be >=1
+	- Cost0 you want Theta to be <=-1
+	- This builds in an extra safety factor into the SVM
+Minimize the Function 
+- subject to theta >= 1 if y(i) = 1
+			 theta <=-1 if y(i) = 0
+
+SVM Decision Boundary: Linear Separable Case
+- Tries to separate data with as large of a margin as possible
+- Often called Large Margin Classifier because tries to classify with the
+  largest margin possible
+
+With Outliers
+- Given one large outlier, it is not necessarily better to drastically change
+  model to accomodate. If C is very large it will change. 
+  - C is roughly equivalent to the 1/lambda parameter previously. It is only
+	when 1/lambda is very large that the model will attempt to over correct for
+	an outlier
+
+
+Mathematics Behind Large Margin Classification
+Vector Inner Product
+- Vector inner product provides the length of the projection of a vector onto
+  another vector. 
+- Inner product is the right angle between the vector and the vector being
+  projected on.
+
+SVM Decision Boundary
+- Basically an SVM is drawing a boundary that maximizes the distance from the
+  points to the boundary. Theta is a vector perpendicular to the boundary (i.e.
+  it is basically the distance from it). So the inner product between the point
+  and theta gives the distance from the decision boundary. 
+
+
+Kernels I
+- Kernels are just similarity functions between a point and x. 
+- Kernel being used in video is Gausian Kernel. It will compute to be close to
+  1 when the point is close to X and close to 0 when it is far from X.
+- But how do you choose the land marks and are there other classifiers besides
+  Gaussian
+
+Kernels II
+How are landmarks chosen?
+- So set all landmarks to be the points Xs. For each X combut f1,f2,f3... for
+  all landmarks. 
+  - Given X(i) map to f1(i)=sim(x(i),l(1)), f2(i)=sim(x(i),l(2))...
+
+SVM Parameters
+- C = (1/lambda)
+	- A large value of C -> lower bias, higher variance
+	- A small value of C -> higher bias, lower variance
+- Sigma^2 is the denominator of the similarity kernal function
+	- A large sigma^2 will cause the fi features to vary more smoothly leading
+	  to a higher bias and lower variance
+	- A small sigma^2 will cause features to vary less smoothly leading to a
+	  lower bias and higher variance
+
+
+SVMs in Practice
+- Generally, us an SVM software package to solve for parameters, theta.
+- Need to Specify:
+	- Choice of parameter C
+	- Choice of Kernel (similarity function)
+- A Linear Kernel, means there is no Kernel being used, so predicts y=1 if
+  ThetaTrans*x > 0. Standard linear classifier. Use this when large number of
+  features but small training set. If trying to fit high dimensional function
+  to small set, don't want to overfit
+- Gaussian Kernel
+	- If use gaussian kernel, may need to provide a kernel function
+	- Need to choose sigma^2. Again a large sigma^2 will have high bias lower
+	  variance. If small, higher variance lower bias
+	- This is good when number of features is small but there is a large number
+	  of training examples
+	- Perform feature scaling before using Gaussian Kernel!
+- Two most common Kernels are definitely linear and Gaussian
+	- not all similarity functions are valid kernels. Need to satisfy Mercer's
+	  Theorem to make sure SVM packages optimizations run correctly and do not
+	  diverge
+
+Multi-class Classification
+- Many SVM packages have built in multi-class classification
+- Otherwise use one vs. all method, if you have K classes then train K SVMs to
+  distinguish between one type and the rest.
+
+Logistic Regression vs. SVM
+- define n as number of features and m as number of training examples
+- If n is large relative to m
+	- n=10,000, 10<m<1000. (Spam classification w/ 10k words)
+	- use logistic regession, or an SVM without a kernel. 
+- if n is small and m is intermediate 
+	- 1<n<1000, 10<m<10000
+	- Use SVM with Gaussian Kernel
+- if n is small but m is large
+	- 1<n<1000, m>50,000
+	- Create/ add more features, then use logistic regression or SVM without
+	  Kernel. SVM with Gaussian tend to struggle with that many examples
+- Logisitic Regression and SVM without kernel are pretty similar
+- A lot of the power of an SVM is when you can use different kernels and
+  complex non-linear functions
+
+- Neural Network likely to work well for most of these settings, but may be
+  slower to train
+- SVM will always find global optimal, dont' have to worry about local optimums
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,46 @@
+
+
+Gradient Checking
+Gradient checking is is a good way to make sure that you back prop algorithm is
+correctly computing your gradient
+- Gradient checking will calculate the approximate partial derivative (slope)
+  of the curve at any point by simply doing the (x+e)-(x-e)/2e which is the
+  simple intuitive way to get an approximate slope
+- This is then done for every element in theta using a loop which will create
+  an approximate expected gradient vector.  
+- This vector can then be compared to the backprop vector to make sure the
+  backprop algorithm is working correctly. Make sure Dvec (backprop) is similar
+  to gradApprox (approx)
+- Do not use grad approx in practice because it's mad inefficient
+- Once veryify turn off gradient checking code when actually doing 
+
+
+Random Initialization
+Need to pick inital value for theta 
+- If simply initialize theta to all zeros then all neurons in your network will
+  simply be equal to the same thing. need to randomly initialize in order for
+  gradient descent to work
+- dTheta1 = dTheta.  After each update, parametrs corresponding to inputs going
+  into each of the hidden units are idential.
+- To get around this problem must randomly initialize Thetas to small values
+  close to zero
+
+
+Putting it Together
+How all pieces fit together to implement neural network
+- First need to pick some network architecture. Input units is just the
+  dimensions of your input. If doing multiclass classification the output will
+  just be the number of classes in output. 
+- Usually the more hidden units the better, more often more hidden units is
+  better. having a number of hidden units that's comperable to the number of
+  inputs 
+- Training, randomly initialize weights, implement forward prop to get output
+  vector for any x, implement code to copmute cost function, implement
+  backprop to compute partial derivatives.
+- There should likely be a for loop at least when first leanring in you code to 
+  perform forward and backward propagation using (xi, yi) getting activation and 
+  delta terms for layer 2 onward.
+- 5) Use gradient checking ot mkae sure implementation of backprop is accruate
+- 6) Then use gradient descent or advanced optimzation method with backprop to
+  try to minimize cost as function of thetas.
+  
